@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: #FF69B4;
+    --color-primary-light: #FFB6D9;
+    --color-primary-pale: #FFE4F5;
+    --color-secondary: #87CEEB;
+    --color-secondary-light: #B0E0E6;
+    --color-secondary-pale: #D4F0F8;
+    --color-cream: #FFFEF0;
+    --color-text: #2D3142;
+    --color-text-light: #6B7280;
+    --color-border: #E5E7EB;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-gradient-to-br from-white via-[#FFFEF0] to-[#F0F8FF] text-[#2D3142];
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply relative px-8 py-3 bg-gradient-to-r from-[#FF69B4] to-[#FF69B4] text-white hover:shadow-lg transition-all duration-300 overflow-hidden group;
+  }
+
+  .btn-secondary {
+    @apply relative px-8 py-3 bg-gradient-to-r from-[#87CEEB] to-[#87CEEB] text-white hover:shadow-lg transition-all duration-300 overflow-hidden group;
+  }
+
+  .btn-outline {
+    @apply px-8 py-3 border-2 border-[#FF69B4] text-[#FF69B4] hover:bg-[#FFE4F5] transition-colors duration-300;
+  }
+
+  .section-gradient {
+    @apply bg-gradient-to-br from-[#FFFEF0] via-white to-[#F0F8FF];
+  }
+
+  .card-soft {
+    @apply bg-white/70 backdrop-blur-md border border-[#FFB6D9]/20 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  @keyframes glow {
+    0%, 100% {
+      box-shadow: 0 0 5px rgba(255, 105, 180, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 20px rgba(255, 105, 180, 0.6);
+    }
+  }
+}
