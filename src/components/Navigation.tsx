@@ -17,29 +17,42 @@ export function Navigation({ isOpen, onClose }: NavigationProps) {
   return (
     <>
       <div
-        className={`fixed inset-0 bg-black/40 backdrop-blur-sm z-50 transition-opacity duration-500 ${
+        className={`fixed inset-0 bg-[#3D2B3D]/30 backdrop-blur-sm z-50 transition-opacity duration-500 ${
           isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
         onClick={onClose}
       />
 
       <nav
-        className={`fixed inset-y-0 left-0 w-full md:w-[600px] bg-gradient-to-b from-white to-[#F0F8FF] z-50 transform transition-transform duration-500 ease-out ${
+        className={`fixed inset-y-0 left-0 w-full md:w-[600px] bg-gradient-to-b from-[#FFF8F0] to-[#FFCCE0]/60 z-50 transform transition-transform duration-500 ease-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <div className="relative h-full overflow-y-auto">
+          <div
+            className="absolute inset-0 opacity-20 pointer-events-none"
+            style={{
+              backgroundImage:
+                'radial-gradient(circle at 80% 20%, #C8DCFF 0%, transparent 50%), radial-gradient(circle at 20% 80%, #FFB3D1 0%, transparent 50%)',
+            }}
+          />
 
           <div className="relative z-10 p-8 md:p-12">
             <button
               onClick={onClose}
-              className="absolute top-8 right-8 p-2 hover:scale-110 transition-transform duration-300"
+              className="absolute top-8 right-8 p-2 hover:bg-[#FFCCE0] rounded-full transition-colors duration-300"
               aria-label="Close menu"
             >
-              <X className="w-6 h-6 text-[#FF69B4]" />
+              <X className="w-6 h-6 text-[#FFB3D1]" />
             </button>
 
-            <div className="mt-20 space-y-1">
+            <div className="mt-4 mb-8">
+              <span className="font-serif text-2xl bg-gradient-to-r from-[#FFB3D1] to-[#A8C4FF] bg-clip-text text-transparent font-bold tracking-widest">
+                MANZIL
+              </span>
+            </div>
+
+            <div className="mt-8 space-y-1">
               {links.map((link, index) => (
                 <a
                   key={link.href}
@@ -51,27 +64,27 @@ export function Navigation({ isOpen, onClose }: NavigationProps) {
                     animation: isOpen ? 'slideInLeft 0.6s ease-out forwards' : 'none',
                   }}
                 >
-                  <span className="block text-5xl md:text-6xl font-serif py-3 text-[#2D3142] hover:text-[#FF69B4] transition-colors duration-300">
+                  <span className="block text-5xl md:text-6xl font-serif py-3 text-[#3D2B3D] group-hover:text-[#FFB3D1] transition-colors duration-300">
                     {link.label}
                   </span>
-                  <div className="h-px bg-gradient-to-r from-[#FFB6D9] to-transparent" />
+                  <div className="h-px bg-gradient-to-r from-[#FFB3D1]/60 via-[#C8DCFF]/40 to-transparent" />
                 </a>
               ))}
             </div>
 
-            <div className="mt-16 space-y-6 text-sm tracking-wider uppercase text-[#6B7280]">
-              <a href="/account" onClick={onClose} className="block hover:text-[#FF69B4] transition-colors font-medium">
+            <div className="mt-16 space-y-4 text-sm tracking-wider uppercase text-[#7A6A7A]">
+              <a href="/account" onClick={onClose} className="block hover:text-[#FFB3D1] transition-colors font-medium">
                 My Account
               </a>
-              <a href="/wishlist" onClick={onClose} className="block hover:text-[#FF69B4] transition-colors font-medium">
+              <a href="/wishlist" onClick={onClose} className="block hover:text-[#FFB3D1] transition-colors font-medium">
                 Wishlist
               </a>
             </div>
 
-            <div className="mt-16 flex gap-6">
+            <div className="mt-12 flex gap-4">
               <a
                 href="https://instagram.com"
-                className="w-10 h-10 rounded-full bg-gradient-to-r from-[#FF69B4] to-[#FF69B4] flex items-center justify-center text-white hover:shadow-lg transition-all"
+                className="w-10 h-10 rounded-full bg-gradient-to-br from-[#FFB3D1] to-[#FFCCE0] flex items-center justify-center text-white hover:shadow-lg hover:shadow-[#FFB3D1]/30 transition-all"
                 aria-label="Instagram"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -80,7 +93,7 @@ export function Navigation({ isOpen, onClose }: NavigationProps) {
               </a>
               <a
                 href="https://facebook.com"
-                className="w-10 h-10 rounded-full bg-gradient-to-r from-[#87CEEB] to-[#87CEEB] flex items-center justify-center text-white hover:shadow-lg transition-all"
+                className="w-10 h-10 rounded-full bg-gradient-to-br from-[#A8C4FF] to-[#C8DCFF] flex items-center justify-center text-white hover:shadow-lg hover:shadow-[#A8C4FF]/30 transition-all"
                 aria-label="Facebook"
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -94,14 +107,8 @@ export function Navigation({ isOpen, onClose }: NavigationProps) {
 
       <style>{`
         @keyframes slideInLeft {
-          from {
-            opacity: 0;
-            transform: translateX(-30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
+          from { opacity: 0; transform: translateX(-30px); }
+          to   { opacity: 1; transform: translateX(0); }
         }
       `}</style>
     </>

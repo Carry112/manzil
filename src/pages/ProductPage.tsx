@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { api } from '../lib/api';
 import { useCart } from '../context/CartContext';
 import { Texture } from '../components/Texture';
 import type { Product } from '../types';
@@ -18,20 +18,12 @@ export function ProductPage({ slug }: { slug: string }) {
   }, [slug]);
 
   const loadProduct = async () => {
-    const { data } = await supabase
-      .from('products')
-      .select('*')
-      .eq('slug', slug)
-      .maybeSingle();
-
-    if (data) {
-      setProduct(data);
-      if (data.sizes && data.sizes.length > 0) {
-        setSelectedSize(data.sizes[0]);
-      }
-      if (data.colors && data.colors.length > 0) {
-        setSelectedColor(data.colors[0].name);
-      }
+    const { data } = await api.products.bySlug(slug);
+    const product = Array.isArray(data) ? data[0] : data;
+    if (product) {
+      setProduct(product);
+      if (product.sizes?.length > 0) setSelectedSize(product.sizes[0]);
+      if (product.colors?.length > 0) setSelectedColor(product.colors[0].name);
     }
   };
 

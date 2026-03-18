@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { SlidersHorizontal, X } from 'lucide-react';
-import { supabase } from '../lib/supabase';
-import { Texture } from '../components/Texture';
+import { api } from '../lib/api';
 import { ProductCard } from '../components/ProductCard';
 import type { Product, Category } from '../types';
 
@@ -19,18 +18,14 @@ export function ShopPage() {
   }, [selectedCategory]);
 
   const loadCategories = async () => {
-    const { data } = await supabase.from('categories').select('*');
+    const { data } = await api.categories.list();
     if (data) setCategories(data);
   };
 
   const loadProducts = async () => {
-    let query = supabase.from('products').select('*');
-
-    if (selectedCategory) {
-      query = query.eq('category_id', selectedCategory);
-    }
-
-    const { data } = await query;
+    const params: Record<string, string> = {};
+    if (selectedCategory) params.category_id = selectedCategory;
+    const { data } = await api.products.list(params);
     if (data) setProducts(data);
   };
 
@@ -41,31 +36,37 @@ export function ShopPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF9F6] pt-24">
-      <div className="max-w-[1920px] mx-auto px-6 md:px-12">
-        <div className="flex items-end justify-between mb-12">
-          <div>
-            <h1 className="font-serif text-5xl md:text-6xl text-[#2C2C2C] mb-2">Shop</h1>
-            <p className="text-[#A8A8A8]">{products.length} products</p>
-          </div>
-
-          <button
-            onClick={() => setIsFilterOpen(true)}
-            className="flex items-center gap-2 px-6 py-3 border border-[#E8DCC4] hover:border-[#C1876B] transition-colors"
-          >
-            <SlidersHorizontal className="w-4 h-4" />
-            <span className="text-sm uppercase tracking-wider">Filters</span>
-          </button>
+    <div className="min-h-screen bg-[#FFF8F0] pt-24">
+      {/* Page header */}
+      <div className="relative overflow-hidden bg-gradient-to-r from-[#FFCCE0]/40 via-[#FFF8F0] to-[#C8DCFF]/30 py-12 mb-8">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 right-0 w-72 h-72 bg-gradient-to-bl from-[#FFB3D1]/20 to-transparent rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-[#C8DCFF]/20 to-transparent rounded-full blur-3xl" />
         </div>
+        <div className="relative z-10 max-w-[1920px] mx-auto px-6 md:px-12">
+          <div className="flex items-end justify-between">
+            <div>
+              <p className="text-xs uppercase tracking-[0.3em] text-[#FFB3D1] mb-2">Discover</p>
+              <h1 className="font-serif text-5xl md:text-6xl text-[#3D2B3D]">Shop</h1>
+              <p className="text-[#B0A0B0] mt-2">{products.length} products</p>
+            </div>
+            <button
+              onClick={() => setIsFilterOpen(true)}
+              className="flex items-center gap-2 px-6 py-3 border border-[#FFB3D1]/40 rounded-full hover:border-[#FFB3D1] hover:bg-[#FFCCE0]/30 transition-all text-[#3D2B3D]"
+            >
+              <SlidersHorizontal className="w-4 h-4 text-[#FFB3D1]" />
+              <span className="text-sm uppercase tracking-wider">Filters</span>
+            </button>
+          </div>
+        </div>
+      </div>
 
+      <div className="max-w-[1920px] mx-auto px-6 md:px-12 pb-24">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 auto-rows-auto">
           {products.map((product, index) => {
             const isFeatured = index % 7 === 0;
             return (
-              <div
-                key={product.id}
-                className={isFeatured ? 'md:col-span-2 md:row-span-2' : ''}
-              >
+              <div key={product.id} className={isFeatured ? 'md:col-span-2 md:row-span-2' : ''}>
                 <ProductCard product={product} featured={isFeatured} />
               </div>
             );
@@ -73,45 +74,50 @@ export function ShopPage() {
         </div>
       </div>
 
+      {/* Filter overlay */}
       <div
-        className={`fixed inset-0 bg-black/40 backdrop-blur-sm z-50 transition-opacity duration-500 ${
+        className={`fixed inset-0 bg-[#3D2B3D]/30 backdrop-blur-sm z-50 transition-opacity duration-500 ${
           isFilterOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
         onClick={() => setIsFilterOpen(false)}
       />
 
+      {/* Filter panel */}
       <div
-        className={`fixed inset-y-0 left-0 w-full md:w-[400px] bg-[#FAF9F6] z-50 transform transition-transform duration-500 ease-out ${
+        className={`fixed inset-y-0 left-0 w-full md:w-[400px] bg-[#FFF8F0] z-50 transform transition-transform duration-500 ease-out ${
           isFilterOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <div className="relative h-full overflow-y-auto">
-          <Texture type="canvas" opacity={0.04} />
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl from-[#FFCCE0]/40 to-transparent rounded-full blur-2xl" />
+          </div>
 
           <div className="relative z-10 p-8">
             <div className="flex items-center justify-between mb-8">
-              <h2 className="font-serif text-2xl text-[#2C2C2C]">Filters</h2>
+              <h2 className="font-serif text-2xl text-[#3D2B3D]">Filters</h2>
               <button
                 onClick={() => setIsFilterOpen(false)}
-                className="p-2 hover:scale-110 transition-transform"
+                className="p-2 hover:bg-[#FFCCE0] rounded-full transition-colors"
               >
-                <X className="w-5 h-5" />
+                <X className="w-5 h-5 text-[#FFB3D1]" />
               </button>
             </div>
 
             <div className="space-y-8">
+              {/* Category filter */}
               <div>
-                <h3 className="text-sm uppercase tracking-wider text-[#2C2C2C] mb-4">Category</h3>
-                <div className="space-y-2">
+                <h3 className="text-xs uppercase tracking-[0.2em] text-[#3D2B3D] mb-4 font-semibold">Category</h3>
+                <div className="space-y-3">
                   <label className="flex items-center gap-3 cursor-pointer group">
                     <input
                       type="radio"
                       name="category"
                       checked={selectedCategory === null}
                       onChange={() => setSelectedCategory(null)}
-                      className="w-4 h-4 text-[#C1876B] border-[#E8DCC4] focus:ring-[#C1876B]"
+                      className="w-4 h-4 accent-[#FFB3D1] border-[#FFB3D1]/40"
                     />
-                    <span className="text-[#2C2C2C] group-hover:text-[#C1876B] transition-colors">
+                    <span className="text-[#3D2B3D] group-hover:text-[#FFB3D1] transition-colors text-sm">
                       All
                     </span>
                   </label>
@@ -122,9 +128,9 @@ export function ShopPage() {
                         name="category"
                         checked={selectedCategory === category.id}
                         onChange={() => setSelectedCategory(category.id)}
-                        className="w-4 h-4 text-[#C1876B] border-[#E8DCC4] focus:ring-[#C1876B]"
+                        className="w-4 h-4 accent-[#FFB3D1] border-[#FFB3D1]/40"
                       />
-                      <span className="text-[#2C2C2C] group-hover:text-[#C1876B] transition-colors">
+                      <span className="text-[#3D2B3D] group-hover:text-[#FFB3D1] transition-colors text-sm">
                         {category.name}
                       </span>
                     </label>
@@ -132,8 +138,9 @@ export function ShopPage() {
                 </div>
               </div>
 
-              <div className="pt-8 border-t border-[#E8DCC4]">
-                <h3 className="text-sm uppercase tracking-wider text-[#2C2C2C] mb-4">
+              {/* Price range */}
+              <div className="pt-8 border-t border-[#FFB3D1]/20">
+                <h3 className="text-xs uppercase tracking-[0.2em] text-[#3D2B3D] mb-4 font-semibold">
                   Price Range
                 </h3>
                 <div className="px-2">
@@ -143,32 +150,32 @@ export function ShopPage() {
                     max="500"
                     value={priceRange[1]}
                     onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
-                    className="w-full h-1 bg-[#E8DCC4] rounded-lg appearance-none cursor-pointer accent-[#C1876B]"
+                    className="w-full h-1.5 rounded-lg appearance-none cursor-pointer accent-[#FFB3D1]"
+                    style={{ background: `linear-gradient(to right, #FFB3D1 0%, #FFB3D1 ${(priceRange[1]/500)*100}%, #FFCCE0 ${(priceRange[1]/500)*100}%, #FFCCE0 100%)` }}
                   />
-                  <div className="flex justify-between mt-3 text-sm text-[#A8A8A8] font-mono">
+                  <div className="flex justify-between mt-3 text-sm text-[#B0A0B0] font-mono">
                     <span>${priceRange[0]}</span>
                     <span>${priceRange[1]}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-8 border-t border-[#E8DCC4]">
-                <h3 className="text-sm uppercase tracking-wider text-[#2C2C2C] mb-4">Size</h3>
+              {/* Size filter */}
+              <div className="pt-8 border-t border-[#FFB3D1]/20">
+                <h3 className="text-xs uppercase tracking-[0.2em] text-[#3D2B3D] mb-4 font-semibold">Size</h3>
                 <div className="grid grid-cols-4 gap-2">
                   {['6', '7', '8', '9', '10', '11', '12', '13'].map((size) => (
                     <button
                       key={size}
                       onClick={() => {
                         setSizes((prev) =>
-                          prev.includes(size)
-                            ? prev.filter((s) => s !== size)
-                            : [...prev, size]
+                          prev.includes(size) ? prev.filter((s) => s !== size) : [...prev, size]
                         );
                       }}
-                      className={`px-4 py-3 border transition-colors ${
+                      className={`px-4 py-3 border rounded-xl transition-all text-sm font-medium ${
                         sizes.includes(size)
-                          ? 'border-[#C1876B] bg-[#C1876B] text-white'
-                          : 'border-[#E8DCC4] hover:border-[#C1876B]'
+                          ? 'border-[#FFB3D1] bg-gradient-to-r from-[#FFB3D1] to-[#FFCCE0] text-white shadow-md'
+                          : 'border-[#FFB3D1]/30 text-[#3D2B3D] hover:border-[#FFB3D1] hover:bg-[#FFCCE0]/30'
                       }`}
                     >
                       {size}
@@ -181,16 +188,15 @@ export function ShopPage() {
             <div className="mt-12 flex gap-3">
               <button
                 onClick={clearFilters}
-                className="flex-1 px-6 py-3 border border-[#E8DCC4] hover:border-[#C1876B] transition-colors text-sm uppercase tracking-wider"
+                className="flex-1 px-6 py-3 border border-[#FFB3D1]/40 rounded-xl hover:border-[#FFB3D1] transition-colors text-sm uppercase tracking-wider text-[#3D2B3D]"
               >
                 Clear All
               </button>
               <button
                 onClick={() => setIsFilterOpen(false)}
-                className="relative flex-1 px-6 py-3 bg-[#C1876B] text-white hover:bg-[#C1876B]/90 transition-colors overflow-hidden group"
+                className="flex-1 px-6 py-3 bg-gradient-to-r from-[#FFB3D1] to-[#A8C4FF] text-white rounded-xl hover:shadow-lg hover:shadow-[#FFB3D1]/30 transition-all text-sm uppercase tracking-wider font-medium"
               >
-                <Texture type="leather" opacity={0.08} className="group-hover:opacity-0" />
-                <span className="relative z-10 text-sm uppercase tracking-wider">Apply</span>
+                Apply
               </button>
             </div>
           </div>

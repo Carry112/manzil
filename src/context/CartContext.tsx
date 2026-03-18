@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { supabase } from '../lib/supabase';
+import { api } from '../lib/api';
 import { getSessionId } from '../lib/session';
 import type { CartItem, Product } from '../types';
 
@@ -25,75 +25,42 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const loadCart = async () => {
     const sessionId = getSessionId();
-    const { data, error } = await supabase
-      .from('cart_items')
-      .select('*, product:products(*)')
-      .eq('session_id', sessionId);
-
+    const { data, error } = await api.cart.list(sessionId);
     if (!error && data) {
       setItems(data as (CartItem & { product: Product })[]);
     }
   };
 
-  useEffect(() => {
-    loadCart();
-  }, []);
+  useEffect(() => { loadCart(); }, []);
 
   const addItem = async (productId: string, size: string, color: string, quantity: number) => {
     const sessionId = getSessionId();
-
     const existingItem = items.find(
       (item) => item.product_id === productId && item.size === size && item.color === color
     );
-
     if (existingItem) {
       await updateQuantity(existingItem.id, existingItem.quantity + quantity);
     } else {
-      const { error } = await supabase.from('cart_items').insert({
-        session_id: sessionId,
-        product_id: productId,
-        quantity,
-        size,
-        color,
-      });
-
-      if (!error) {
-        await loadCart();
-      }
+      const { error } = await api.cart.add({ session_id: sessionId, product_id: productId, quantity, size, color });
+      if (!error) await loadCart();
     }
   };
 
   const updateQuantity = async (itemId: string, quantity: number) => {
-    if (quantity <= 0) {
-      await removeItem(itemId);
-      return;
-    }
-
-    const { error } = await supabase
-      .from('cart_items')
-      .update({ quantity })
-      .eq('id', itemId);
-
-    if (!error) {
-      await loadCart();
-    }
+    if (quantity <= 0) { await removeItem(itemId); return; }
+    const { error } = await api.cart.updateQty(itemId, quantity);
+    if (!error) await loadCart();
   };
 
   const removeItem = async (itemId: string) => {
-    const { error } = await supabase.from('cart_items').delete().eq('id', itemId);
-
-    if (!error) {
-      await loadCart();
-    }
+    const { error } = await api.cart.remove(itemId);
+    if (!error) await loadCart();
   };
 
   const clearCart = async () => {
     const sessionId = getSessionId();
-    const { error } = await supabase.from('cart_items').delete().eq('session_id', sessionId);
-
-    if (!error) {
-      setItems([]);
-    }
+    const { error } = await api.cart.clearSession(sessionId);
+    if (!error) setItems([]);
   };
 
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
@@ -102,17 +69,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
   return (
     <CartContext.Provider
       value={{
-        items,
-        addItem,
-        updateQuantity,
-        removeItem,
-        clearCart,
-        itemCount,
-        total,
-        isOpen,
-        openCart: () => setIsOpen(true),
+        items, addItem, updateQuantity, removeItem, clearCart,
+        itemCount, total, isOpen,
+        openCart:  () => setIsOpen(true),
         closeCart: () => setIsOpen(false),
-        toggleCart: () => setIsOpen(!isOpen),
+        toggleCart:() => setIsOpen(!isOpen),
       }}
     >
       {children}
@@ -122,8 +83,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
 export function useCart() {
   const context = useContext(CartContext);
-  if (!context) {
-    throw new Error('useCart must be used within CartProvider');
-  }
+  if (!context) throw new Error('useCart must be used within CartProvider');
   return context;
 }

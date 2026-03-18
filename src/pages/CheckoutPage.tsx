@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useCart } from '../context/CartContext';
-import { supabase } from '../lib/supabase';
+import { api } from '../lib/api';
 import { getSessionId } from '../lib/session';
 import { Texture } from '../components/Texture';
 import { Lock } from 'lucide-react';
@@ -33,33 +33,23 @@ export function CheckoutPage() {
     try {
       const sessionId = getSessionId();
 
-      const { data: order, error: orderError } = await supabase
-        .from('orders')
-        .insert({
-          session_id: sessionId,
-          email: shipping.email,
-          total,
-          status: 'pending',
-          shipping_info: shipping,
-        })
-        .select()
-        .single();
+      const { error: orderError } = await api.orders.create({
+        session_id: sessionId,
+        email: shipping.email,
+        total,
+        status: 'pending',
+        shipping_info: shipping,
+        items: items.map((item) => ({
+          product_id:   item.product_id,
+          product_name: item.product.name,
+          quantity:     item.quantity,
+          size:         item.size,
+          color:        item.color,
+          price:        item.product.price,
+        })),
+      });
 
       if (orderError) throw orderError;
-
-      const orderItems = items.map((item) => ({
-        order_id: order.id,
-        product_id: item.product_id,
-        product_name: item.product.name,
-        quantity: item.quantity,
-        size: item.size,
-        color: item.color,
-        price: item.product.price,
-      }));
-
-      const { error: itemsError } = await supabase.from('order_items').insert(orderItems);
-
-      if (itemsError) throw itemsError;
 
       await clearCart();
       setStep(3);
