@@ -45,7 +45,7 @@ export function Homepage() {
             <p className="text-sm uppercase tracking-[0.3em] text-[#FFB3D1] font-medium mb-4">
               New Collection 2024
             </p>
-            <h1 className="font-serif text-6xl md:text-8xl text-[#3D2B3D] leading-tight mb-6">
+            <h1 className="font-serif text-5xl md:text-6xl lg:text-8xl text-[#3D2B3D] leading-tight mb-6">
               Every Step
               <br />
               <span className="bg-gradient-to-r from-[#FFB3D1] to-[#A8C4FF] bg-clip-text text-transparent">
@@ -55,16 +55,16 @@ export function Homepage() {
             <p className="text-[#7A6A7A] leading-relaxed mb-10 text-lg">
               Crafted with intention, designed for your journey. Discover footwear that moves with purpose.
             </p>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center gap-4 w-full">
               <a
                 href="/shop"
-                className="inline-block px-10 py-4 bg-gradient-to-r from-[#FFB3D1] to-[#A8C4FF] text-white font-medium hover:shadow-xl hover:shadow-[#FFB3D1]/30 transition-all duration-300 rounded-full text-sm uppercase tracking-wider"
+                className="w-full sm:w-auto text-center inline-block px-10 py-4 bg-gradient-to-r from-[#FFB3D1] to-[#A8C4FF] text-white font-medium hover:shadow-xl hover:shadow-[#FFB3D1]/30 transition-all duration-300 rounded-full text-sm uppercase tracking-wider"
               >
                 Explore Collection
               </a>
               <a
                 href="/about"
-                className="inline-block px-10 py-4 border-2 border-[#FFB3D1]/50 text-[#3D2B3D] hover:border-[#FFB3D1] hover:bg-[#FFCCE0]/30 transition-all duration-300 rounded-full text-sm uppercase tracking-wider"
+                className="w-full sm:w-auto text-center inline-block px-10 py-4 border-2 border-[#FFB3D1]/50 text-[#3D2B3D] hover:border-[#FFB3D1] hover:bg-[#FFCCE0]/30 transition-all duration-300 rounded-full text-sm uppercase tracking-wider"
               >
                 Our Story
               </a>

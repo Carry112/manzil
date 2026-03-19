@@ -118,8 +118,8 @@ export function CheckoutPage() {
           <div className="lg:col-span-2">
             {step === 1 && (
               <form onSubmit={handleShippingSubmit} className="space-y-6">
-                <div className="grid grid-cols-2 gap-6">
-                  <div className="col-span-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="col-span-1 sm:col-span-2">
                     <label className="block text-sm uppercase tracking-wider text-[#2C2C2C] mb-2">
                       Full Name
                     </label>
@@ -132,7 +132,7 @@ export function CheckoutPage() {
                     />
                   </div>
 
-                  <div className="col-span-2 md:col-span-1">
+                  <div className="col-span-1">
                     <label className="block text-sm uppercase tracking-wider text-[#2C2C2C] mb-2">
                       Email
                     </label>
@@ -145,7 +145,7 @@ export function CheckoutPage() {
                     />
                   </div>
 
-                  <div className="col-span-2 md:col-span-1">
+                  <div className="col-span-1">
                     <label className="block text-sm uppercase tracking-wider text-[#2C2C2C] mb-2">
                       Phone
                     </label>
@@ -158,7 +158,7 @@ export function CheckoutPage() {
                     />
                   </div>
 
-                  <div className="col-span-2">
+                  <div className="col-span-1 sm:col-span-2">
                     <label className="block text-sm uppercase tracking-wider text-[#2C2C2C] mb-2">
                       Address
                     </label>
@@ -248,7 +248,7 @@ export function CheckoutPage() {
                   </p>
                 </div>
 
-                <div className="flex gap-4">
+                <div className="flex flex-col sm:flex-row gap-4">
                   <button
                     type="button"
                     onClick={() => setStep(1)}

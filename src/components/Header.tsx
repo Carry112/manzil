@@ -72,7 +72,7 @@ export function Header({ onMenuClick }: HeaderProps) {
 
             <a
               href="/wishlist"
-              className="p-2 hover:bg-[#FFCCE0] rounded-lg transition-colors"
+              className="hidden sm:flex p-2 hover:bg-[#FFCCE0] rounded-lg transition-colors"
               aria-label="Wishlist"
             >
               <Heart className="w-5 h-5 text-[#FFB3D1]" />
@@ -80,7 +80,7 @@ export function Header({ onMenuClick }: HeaderProps) {
 
             <a
               href="/account"
-              className="p-2 hover:bg-[#C8DCFF] rounded-lg transition-colors"
+              className="hidden sm:flex p-2 hover:bg-[#C8DCFF] rounded-lg transition-colors"
               aria-label="Account"
             >
               <User className="w-5 h-5 text-[#A8C4FF]" />

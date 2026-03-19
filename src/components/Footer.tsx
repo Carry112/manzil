@@ -78,7 +78,7 @@ export function Footer() {
 
         <div className="mt-12 pt-8 border-t border-[#FFB3D1]/20 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-[#B0A0B0]">
           <p>© 2024 Manzil. All rights reserved.</p>
-          <div className="flex gap-6">
+          <div className="flex flex-wrap justify-center gap-4 md:gap-6">
             <a href="/privacy" className="hover:text-[#FFB3D1] transition-colors">Privacy Policy</a>
             <a href="/terms" className="hover:text-[#FFB3D1] transition-colors">Terms of Service</a>
             <a href="/shipping" className="hover:text-[#A8C4FF] transition-colors">Shipping Info</a>
