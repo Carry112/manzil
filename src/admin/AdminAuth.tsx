@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Eye, EyeOff, Lock, Mail, ShieldCheck } from 'lucide-react';
 
 // Simple local admin credentials (no Supabase auth needed)
-const ADMIN_EMAIL = 'admin@manzil.com';
+const ADMIN_EMAIL = 'admin@chelouve.com';
 const ADMIN_PASSWORD = 'admin123';
 
 interface AdminAuthProps {
@@ -25,7 +25,7 @@ export function AdminAuth({ onLogin }: AdminAuthProps) {
     await new Promise((r) => setTimeout(r, 700));
 
     if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-      sessionStorage.setItem('manzil_admin_auth', 'true');
+      sessionStorage.setItem('chelouve_admin_auth', 'true');
       onLogin();
     } else {
       setError('Invalid email or password. Please try again.');
@@ -49,7 +49,7 @@ export function AdminAuth({ onLogin }: AdminAuthProps) {
             <ShieldCheck className="w-8 h-8 text-white" />
           </div>
           <h1 className="font-serif text-3xl text-[#3D2B3D] mb-1">Admin Portal</h1>
-          <p className="text-sm text-[#B0A0B0]">Manzil CMS — Sign in to continue</p>
+          <p className="text-sm text-[#B0A0B0]">Chelouve CMS — Sign in to continue</p>
         </div>
 
         {/* Login card */}
@@ -66,7 +66,7 @@ export function AdminAuth({ onLogin }: AdminAuthProps) {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@manzil.com"
+                  placeholder="admin@chelouve.com"
                   required
                   className="w-full pl-11 pr-4 py-3.5 bg-[#FFF8F0] border border-[#FFB3D1]/30 rounded-xl focus:outline-none focus:border-[#FFB3D1] focus:ring-2 focus:ring-[#FFB3D1]/10 transition-all text-[#3D2B3D] placeholder:text-[#C0B0C0] text-sm"
                 />
@@ -130,13 +130,13 @@ export function AdminAuth({ onLogin }: AdminAuthProps) {
             <p className="text-xs text-[#B0A0B0] text-center">
               <span className="text-[#7A6A7A] font-medium">Demo credentials:</span>
               <br />
-              <span className="font-mono">admin@manzil.com</span> / <span className="font-mono">admin123</span>
+              <span className="font-mono">admin@chelouve.com</span> / <span className="font-mono">admin123</span>
             </p>
           </div>
         </div>
 
         <p className="text-center text-xs text-[#C0B0C0] mt-6">
-          © 2024 Manzil · Admin Portal
+          © 2024 Chelouve · Admin Portal
         </p>
       </div>
     </div>

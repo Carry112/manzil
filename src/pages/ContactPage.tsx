@@ -38,7 +38,7 @@ export function ContactPage() {
             {
               icon: Mail,
               title: 'Email',
-              content: 'hello@manzil.com',
+              content: 'hello@chelouve.com',
               desc: 'We respond within 24 hours',
             },
             {

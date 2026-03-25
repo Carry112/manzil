@@ -1,7 +1,7 @@
 {
-  "name": "manzil-server",
+  "name": "chelouve-server",
   "version": "1.0.0",
-  "description": "Manzil REST API — Express + PostgreSQL",
+  "description": "Chelouve REST API — Express + PostgreSQL",
   "type": "module",
   "main": "index.mjs",
   "scripts": {

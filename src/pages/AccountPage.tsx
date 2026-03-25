@@ -9,7 +9,7 @@ export function AccountPage() {
     return (
       <div className="min-h-screen pt-24 pb-16">
         <div className="max-w-md mx-auto px-6">
-          <h1 className="font-serif text-4xl text-[#2D3142] mb-8 text-center">Welcome to Manzil</h1>
+          <h1 className="font-serif text-4xl text-[#2D3142] mb-8 text-center">Welcome to Chelouve</h1>
 
           <div className="card-soft p-8 mb-6">
             <h2 className="font-bold text-[#2D3142] text-lg mb-6 text-center">Sign In</h2>

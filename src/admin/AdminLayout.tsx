@@ -52,8 +52,8 @@ export function AdminLayout({ children, activeSection, onSectionChange, onLogout
           <div className="absolute -top-8 -right-8 w-32 h-32 bg-gradient-to-br from-[#FFB3D1]/20 to-[#C8DCFF]/20 rounded-full blur-2xl" />
           <div className="relative z-10 flex items-center justify-between">
             <div>
-              <h2 className="font-serif text-xl bg-gradient-to-r from-[#FFB3D1] to-[#A8C4FF] bg-clip-text text-transparent font-bold tracking-widest">
-                MANZIL
+              <h2 className="text-xl text-[#1A1A1A] font-medium tracking-[0.4em] uppercase" style={{ fontFamily: "'Bodoni Moda', serif" }}>
+                CHÉLOUVE
               </h2>
               <p className="text-[10px] text-[#B0A0B0] uppercase tracking-[0.2em] mt-0.5">Admin CMS</p>
             </div>
@@ -97,7 +97,7 @@ export function AdminLayout({ children, activeSection, onSectionChange, onLogout
             </div>
             <div>
               <p className="text-xs font-semibold text-[#3D2B3D]">Admin</p>
-              <p className="text-[10px] text-[#B0A0B0]">admin@manzil.com</p>
+              <p className="text-[10px] text-[#B0A0B0]">admin@chelouve.com</p>
             </div>
           </div>
           <button

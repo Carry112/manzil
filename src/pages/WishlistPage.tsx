@@ -5,7 +5,7 @@ export function WishlistPage() {
   const [wishlist, setWishlist] = useState<any[]>([]);
 
   useEffect(() => {
-    const saved = localStorage.getItem('manzil_wishlist');
+    const saved = localStorage.getItem('chelouve_wishlist');
     if (saved) {
       setWishlist(JSON.parse(saved));
     }
@@ -14,7 +14,7 @@ export function WishlistPage() {
   const removeFromWishlist = (id: string) => {
     const updated = wishlist.filter((item) => item.id !== id);
     setWishlist(updated);
-    localStorage.setItem('manzil_wishlist', JSON.stringify(updated));
+    localStorage.setItem('chelouve_wishlist', JSON.stringify(updated));
   };
 
   return (

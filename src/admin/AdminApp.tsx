@@ -15,12 +15,12 @@ export function AdminApp() {
 
   useEffect(() => {
     // Persist auth across page refreshes within the same session
-    const stored = sessionStorage.getItem('manzil_admin_auth');
+    const stored = sessionStorage.getItem('chelouve_admin_auth');
     if (stored === 'true') setIsAuthenticated(true);
   }, []);
 
   const handleLogout = () => {
-    sessionStorage.removeItem('manzil_admin_auth');
+    sessionStorage.removeItem('chelouve_admin_auth');
     setIsAuthenticated(false);
   };
 

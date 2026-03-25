@@ -23,7 +23,7 @@ const faqs = [
     category: 'Product Care',
     questions: [
       {
-        q: 'How do I care for my Manzil shoes?',
+        q: 'How do I care for my Chelouve shoes?',
         a: 'We recommend using a soft brush for cleaning, applying leather conditioner monthly, and storing in a cool, dry place. See our care guides for specific materials.',
       },
       {
@@ -31,7 +31,7 @@ const faqs = [
         a: 'Absolutely! Our lifetime support includes professional resoles and repairs. Simply contact us with your shoe information.',
       },
       {
-        q: 'How long do Manzil shoes last?',
+        q: 'How long do Chelouve shoes last?',
         a: 'With proper care, our shoes can last 10+ years. Many customers have shoes that have been worn for decades.',
       },
     ],
@@ -57,7 +57,7 @@ const faqs = [
     category: 'Sustainability',
     questions: [
       {
-        q: 'Are Manzil shoes environmentally friendly?',
+        q: 'Are Chelouve shoes environmentally friendly?',
         a: 'We use sustainable materials and ethical manufacturing practices. We offset our carbon footprint through verified environmental projects.',
       },
       {

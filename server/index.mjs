@@ -1,4 +1,4 @@
-// server/index.mjs  — Manzil REST API (Express + PostgreSQL 18)
+// server/index.mjs  — Chelouve REST API (Express + PostgreSQL 18)
 import express from 'express';
 import cors    from 'cors';
 import pg      from 'pg';
@@ -310,4 +310,4 @@ app.get('/api/stats', async (_req, res) => {
 });
 
 // ──────────────────────────────────────────────────────
-app.listen(PORT, () => console.log(`🚀  Manzil API running on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`🚀  Chelouve API running on http://localhost:${PORT}`));

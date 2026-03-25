@@ -47,8 +47,8 @@ export function Navigation({ isOpen, onClose }: NavigationProps) {
             </button>
 
             <div className="mt-4 mb-8">
-              <span className="font-serif text-2xl bg-gradient-to-r from-[#FFB3D1] to-[#A8C4FF] bg-clip-text text-transparent font-bold tracking-widest">
-                MANZIL
+              <span className="text-2xl text-[#1A1A1A] font-medium tracking-[0.4em] uppercase" style={{ fontFamily: "'Bodoni Moda', serif" }}>
+                CHÉLOUVE
               </span>
             </div>
 

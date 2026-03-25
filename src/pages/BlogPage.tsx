@@ -4,7 +4,7 @@ const articles = [
   {
     id: 1,
     title: 'The Art of Handcrafted Footwear',
-    excerpt: 'Discover the centuries-old techniques that make each Manzil shoe a masterpiece.',
+    excerpt: 'Discover the centuries-old techniques that make each Chelouve shoe a masterpiece.',
     image: 'https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=800',
     date: '2024-03-15',
     category: 'Craftsmanship',
@@ -21,7 +21,7 @@ const articles = [
   },
   {
     id: 3,
-    title: 'Care Guide: Keeping Your Manzil Shoes Like New',
+    title: 'Care Guide: Keeping Your Chelouve Shoes Like New',
     excerpt: 'Expert tips on maintaining your shoes for decades of wear and style.',
     image: 'https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=800',
     date: '2024-03-10',
@@ -50,7 +50,7 @@ export function BlogPage() {
         <div className="relative z-10 max-w-[1920px] mx-auto px-6 md:px-12">
           <h1 className="font-serif text-5xl md:text-6xl text-[#2D3142] mb-4">Stories & Insights</h1>
           <p className="text-xl text-[#6B7280] max-w-2xl">
-            Explore the craft, culture, and craftsmanship behind every Manzil pair
+            Explore the craft, culture, and craftsmanship behind every Chelouve pair
           </p>
         </div>
       </section>

@@ -12,7 +12,7 @@ export function Footer() {
       <div className="relative z-10 max-w-[1920px] mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
           <div className="md:col-span-3">
-            <h3 className="font-serif text-3xl bg-gradient-to-r from-[#FFB3D1] to-[#A8C4FF] bg-clip-text text-transparent mb-4 tracking-widest">MANZIL</h3>
+            <h3 className="text-3xl text-[#1A1A1A] font-medium tracking-[0.4em] uppercase mb-4" style={{ fontFamily: "'Bodoni Moda', serif" }}>CHÉLOUVE</h3>
             <p className="text-[#7A6A7A] leading-relaxed max-w-sm text-sm">
               Every step tells a story. Discover handcrafted footwear designed for your unique journey.
             </p>
@@ -77,7 +77,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-[#FFB3D1]/20 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-[#B0A0B0]">
-          <p>© 2024 Manzil. All rights reserved.</p>
+          <p>© 2024 Chelouve. All rights reserved.</p>
           <div className="flex flex-wrap justify-center gap-4 md:gap-6">
             <a href="/privacy" className="hover:text-[#FFB3D1] transition-colors">Privacy Policy</a>
             <a href="/terms" className="hover:text-[#FFB3D1] transition-colors">Terms of Service</a>

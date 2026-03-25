@@ -38,8 +38,8 @@ export function Header({ onMenuClick }: HeaderProps) {
           </button>
 
           <a href="/" className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0">
-            <h1 className="font-serif text-2xl md:text-3xl bg-gradient-to-r from-[#FFB3D1] to-[#A8C4FF] bg-clip-text text-transparent font-bold tracking-widest">
-              MANZIL
+            <h1 className="text-2xl md:text-3xl text-[#1A1A1A] font-medium tracking-[0.4em] uppercase" style={{ fontFamily: "'Bodoni Moda', serif" }}>
+              CHÉLOUVE
             </h1>
           </a>
 

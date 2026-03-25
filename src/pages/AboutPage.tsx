@@ -15,7 +15,7 @@ export function AboutPage() {
               Every Step <span className="bg-gradient-to-r from-[#FF69B4] to-[#87CEEB] bg-clip-text text-transparent">Tells a Story</span>
             </h1>
             <p className="text-xl text-[#6B7280] leading-relaxed">
-              Manzil was born from a simple belief: that shoes are more than just objects. They're companions on your journey, witnesses to your stories, and expressions of who you are.
+              Chelouve was born from a simple belief: that shoes are more than just objects. They're companions on your journey, witnesses to your stories, and expressions of who you are.
             </p>
           </div>
         </div>
@@ -34,7 +34,7 @@ export function AboutPage() {
           <div>
             <h3 className="font-serif text-3xl text-[#2D3142] mb-6">Handcrafted Excellence</h3>
             <p className="text-[#6B7280] leading-relaxed mb-6">
-              Founded in 2018, Manzil brings together master craftspeople from around the world. Each pair is meticulously handcrafted using premium materials and traditional techniques that have been perfected over generations.
+              Founded in 2018, Chelouve brings together master craftspeople from around the world. Each pair is meticulously handcrafted using premium materials and traditional techniques that have been perfected over generations.
             </p>
             <p className="text-[#6B7280] leading-relaxed">
               We believe in quality over quantity. Every stitch, every curve, every detail is a testament to our commitment to excellence. We don't just make shoes; we create walking art.
@@ -80,7 +80,7 @@ export function AboutPage() {
       </section>
 
       <section className="py-20 max-w-[1920px] mx-auto px-6 md:px-12">
-        <h2 className="font-serif text-4xl text-[#2D3142] mb-16 text-center">Why Choose Manzil</h2>
+        <h2 className="font-serif text-4xl text-[#2D3142] mb-16 text-center">Why Choose Chelouve</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {[
             {

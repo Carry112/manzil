@@ -48,7 +48,7 @@ export function Cart() {
                   <ShoppingBag className="w-10 h-10 text-[#FFB3D1]" />
                 </div>
                 <h3 className="font-serif text-xl text-[#3D2B3D] mb-2">Your cart is empty</h3>
-                <p className="text-[#B0A0B0] mb-6 text-sm">Start your journey with Manzil</p>
+                <p className="text-[#B0A0B0] mb-6 text-sm">Start your journey with Chelouve</p>
                 <a
                   href="/shop"
                   className="px-8 py-3 bg-gradient-to-r from-[#FFB3D1] to-[#A8C4FF] text-white rounded-xl hover:shadow-lg hover:shadow-[#FFB3D1]/30 transition-all font-medium"
