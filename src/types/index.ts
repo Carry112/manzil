@@ -67,3 +67,24 @@ export interface ShippingInfo {
   country: string;
   phone: string;
 }
+
+export interface FAQCategory {
+  id: string;
+  name: string;
+  slug: string;
+  sort_order: number;
+  is_active: boolean;
+  created_at: string;
+}
+
+export interface FAQItem {
+  id: string;
+  category_id: string;
+  question: string;
+  answer: string;
+  sort_order: number;
+  is_active: boolean;
+  created_at: string;
+  category_name?: string;
+  category_slug?: string;
+}

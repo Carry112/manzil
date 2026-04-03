@@ -64,6 +64,25 @@ export const api = {
                                           request<any>(`/orders/${id}/status`, { method: 'PUT', body: JSON.stringify({ status }) }),
   },
 
+  // ── FAQ (public + admin) ────────────────────────────────────────────────
+  faqs: {
+    listPublic: () => request<{ categories: any[]; items: any[] }>('/faqs'),
+    listAdmin: (params: Record<string, string> = {}) => {
+      const qs = new URLSearchParams(params).toString();
+      return request<any[]>(`/admin/faqs${qs ? '?' + qs : ''}`);
+    },
+    create: (body: object) => request<any>('/admin/faqs', { method: 'POST', body: JSON.stringify(body) }),
+    update: (id: string, body: object) => request<any>(`/admin/faqs/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
+    delete: (id: string) => request<null>(`/admin/faqs/${id}`, { method: 'DELETE' }),
+  },
+
+  faqCategories: {
+    list: () => request<any[]>('/admin/faq-categories'),
+    create: (body: object) => request<any>('/admin/faq-categories', { method: 'POST', body: JSON.stringify(body) }),
+    update: (id: string, body: object) => request<any>(`/admin/faq-categories/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
+    delete: (id: string) => request<null>(`/admin/faq-categories/${id}`, { method: 'DELETE' }),
+  },
+
   // ── Stats (admin) ─────────────────────────────────────────────────────────
   stats: {
     get: () => request<{ totalProducts: number; totalOrders: number; totalRevenue: number; totalCategories: number }>('/stats'),

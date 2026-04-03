@@ -5,13 +5,14 @@ import {
   ShoppingBag,
   Users,
   Tag,
+  HelpCircle,
   LogOut,
   Menu,
   X,
   ChevronRight,
 } from 'lucide-react';
 
-type AdminSection = 'dashboard' | 'products' | 'categories' | 'orders' | 'accounts';
+type AdminSection = 'dashboard' | 'products' | 'categories' | 'faqs' | 'orders' | 'accounts';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -24,6 +25,7 @@ const navItems: { id: AdminSection; label: string; icon: React.FC<{ className?: 
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { id: 'products', label: 'Products', icon: Package },
   { id: 'categories', label: 'Categories', icon: Tag },
+  { id: 'faqs', label: 'FAQs', icon: HelpCircle },
   { id: 'orders', label: 'Orders', icon: ShoppingBag },
   { id: 'accounts', label: 'Accounts', icon: Users },
 ];

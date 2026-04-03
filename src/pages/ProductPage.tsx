@@ -78,11 +78,11 @@ export function ProductPage({ slug }: { slug: string }) {
                 ))}
               </div>
 
-              <div className="flex-1 aspect-[3/4] bg-[#F5F1E8] overflow-hidden group cursor-zoom-in">
+              <div className="flex-1 aspect-[3/4] bg-[#F5F1E8] overflow-hidden">
                 <img
                   src={product.images[selectedImage]}
                   alt={product.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  className="w-full h-full object-cover"
                 />
               </div>
             </div>

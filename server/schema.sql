@@ -65,6 +65,27 @@ CREATE TABLE IF NOT EXISTS order_items (
   created_at   TIMESTAMPTZ DEFAULT now()
 );
 
+-- FAQ categories
+CREATE TABLE IF NOT EXISTS faq_categories (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name        TEXT NOT NULL,
+  slug        TEXT UNIQUE NOT NULL,
+  sort_order  INTEGER NOT NULL DEFAULT 0,
+  is_active   BOOLEAN NOT NULL DEFAULT true,
+  created_at  TIMESTAMPTZ DEFAULT now()
+);
+
+-- FAQ items
+CREATE TABLE IF NOT EXISTS faqs (
+  id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  category_id  UUID REFERENCES faq_categories(id) ON DELETE CASCADE NOT NULL,
+  question     TEXT NOT NULL,
+  answer       TEXT NOT NULL,
+  sort_order   INTEGER NOT NULL DEFAULT 0,
+  is_active    BOOLEAN NOT NULL DEFAULT true,
+  created_at   TIMESTAMPTZ DEFAULT now()
+);
+
 -- Indexes
 CREATE INDEX IF NOT EXISTS idx_products_category    ON products(category_id);
 CREATE INDEX IF NOT EXISTS idx_products_featured    ON products(featured) WHERE featured = true;
@@ -72,3 +93,5 @@ CREATE INDEX IF NOT EXISTS idx_products_new_arrival ON products(new_arrival) WHE
 CREATE INDEX IF NOT EXISTS idx_cart_session         ON cart_items(session_id);
 CREATE INDEX IF NOT EXISTS idx_orders_session       ON orders(session_id);
 CREATE INDEX IF NOT EXISTS idx_order_items_order    ON order_items(order_id);
+CREATE INDEX IF NOT EXISTS idx_faq_categories_order ON faq_categories(sort_order, name);
+CREATE INDEX IF NOT EXISTS idx_faq_items_category   ON faqs(category_id, sort_order);

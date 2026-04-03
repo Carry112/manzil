@@ -78,4 +78,19 @@
     0%, 100% { box-shadow: 0 0 8px rgba(255, 179, 209, 0.3); }
     50%       { box-shadow: 0 0 24px rgba(168, 196, 255, 0.5); }
   }
+
+  @keyframes orbital-spin {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to   { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+
+  @keyframes orbital-spin-reverse {
+    from { transform: translate(-50%, -50%) rotate(360deg); }
+    to   { transform: translate(-50%, -50%) rotate(0deg); }
+  }
+
+  @keyframes search-pulse {
+    0%, 100% { opacity: 0.75; }
+    50%      { opacity: 1; }
+  }
 }

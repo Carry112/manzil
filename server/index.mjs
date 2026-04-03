@@ -52,6 +52,24 @@ function castOrder(o) {
   };
 }
 
+function castFaqCategory(c) {
+  if (!c) return c;
+  return {
+    ...c,
+    sort_order: parseInt(c.sort_order, 10),
+    is_active: Boolean(c.is_active),
+  };
+}
+
+function castFaqItem(faq) {
+  if (!faq) return faq;
+  return {
+    ...faq,
+    sort_order: parseInt(faq.sort_order, 10),
+    is_active: Boolean(faq.is_active),
+  };
+}
+
 // ─── HEALTH ────────────────────────────────────────────────────────────────
 app.get('/api/health', async (_req, res) => {
   try { await q('SELECT 1'); ok(res, 'ok'); } catch (e) { err(res, e); }
@@ -291,6 +309,167 @@ app.put('/api/orders/:id/status', async (req, res) => {
 });
 
 // ══════════════════════════════════════════════════════
+//  FAQ (public + admin)
+// ══════════════════════════════════════════════════════
+app.get('/api/faqs', async (_req, res) => {
+  try {
+    const [catRes, faqRes] = await Promise.all([
+      q(
+        `SELECT *
+         FROM faq_categories
+         WHERE is_active = true
+         ORDER BY sort_order ASC, name ASC`
+      ),
+      q(
+        `SELECT f.*, c.slug AS category_slug
+         FROM faqs f
+         JOIN faq_categories c ON c.id = f.category_id
+         WHERE f.is_active = true AND c.is_active = true
+         ORDER BY c.sort_order ASC, f.sort_order ASC, f.created_at ASC`
+      ),
+    ]);
+
+    ok(res, {
+      categories: catRes.rows.map(castFaqCategory),
+      items: faqRes.rows.map(castFaqItem),
+    });
+  } catch (e) { err(res, e); }
+});
+
+app.get('/api/admin/faq-categories', async (_req, res) => {
+  try {
+    const { rows } = await q(
+      `SELECT *
+       FROM faq_categories
+       ORDER BY sort_order ASC, name ASC`
+    );
+    ok(res, rows.map(castFaqCategory));
+  } catch (e) { err(res, e); }
+});
+
+app.post('/api/admin/faq-categories', async (req, res) => {
+  const {
+    name,
+    slug,
+    sort_order = 0,
+    is_active = true,
+  } = req.body;
+
+  try {
+    const { rows } = await q(
+      `INSERT INTO faq_categories (name, slug, sort_order, is_active)
+       VALUES ($1, $2, $3, $4)
+       RETURNING *`,
+      [name, slug, sort_order, is_active]
+    );
+    ok(res, castFaqCategory(rows[0]));
+  } catch (e) { err(res, e); }
+});
+
+app.put('/api/admin/faq-categories/:id', async (req, res) => {
+  const {
+    name,
+    slug,
+    sort_order = 0,
+    is_active = true,
+  } = req.body;
+
+  try {
+    const { rows } = await q(
+      `UPDATE faq_categories
+       SET name = $1,
+           slug = $2,
+           sort_order = $3,
+           is_active = $4
+       WHERE id = $5
+       RETURNING *`,
+      [name, slug, sort_order, is_active, req.params.id]
+    );
+    ok(res, castFaqCategory(rows[0]));
+  } catch (e) { err(res, e); }
+});
+
+app.delete('/api/admin/faq-categories/:id', async (req, res) => {
+  try {
+    await q('DELETE FROM faq_categories WHERE id = $1', [req.params.id]);
+    ok(res, null);
+  } catch (e) { err(res, e); }
+});
+
+app.get('/api/admin/faqs', async (req, res) => {
+  const { category_id } = req.query;
+  const vals = [];
+  let text =
+    `SELECT f.*, c.name AS category_name, c.slug AS category_slug
+     FROM faqs f
+     JOIN faq_categories c ON c.id = f.category_id`;
+
+  if (category_id) {
+    vals.push(category_id);
+    text += ` WHERE f.category_id = $${vals.length}`;
+  }
+
+  text += ' ORDER BY c.sort_order ASC, f.sort_order ASC, f.created_at ASC';
+
+  try {
+    const { rows } = await q(text, vals);
+    ok(res, rows.map(castFaqItem));
+  } catch (e) { err(res, e); }
+});
+
+app.post('/api/admin/faqs', async (req, res) => {
+  const {
+    category_id,
+    question,
+    answer,
+    sort_order = 0,
+    is_active = true,
+  } = req.body;
+
+  try {
+    const { rows } = await q(
+      `INSERT INTO faqs (category_id, question, answer, sort_order, is_active)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING *`,
+      [category_id, question, answer, sort_order, is_active]
+    );
+    ok(res, castFaqItem(rows[0]));
+  } catch (e) { err(res, e); }
+});
+
+app.put('/api/admin/faqs/:id', async (req, res) => {
+  const {
+    category_id,
+    question,
+    answer,
+    sort_order = 0,
+    is_active = true,
+  } = req.body;
+
+  try {
+    const { rows } = await q(
+      `UPDATE faqs
+       SET category_id = $1,
+           question = $2,
+           answer = $3,
+           sort_order = $4,
+           is_active = $5
+       WHERE id = $6
+       RETURNING *`,
+      [category_id, question, answer, sort_order, is_active, req.params.id]
+    );
+    ok(res, castFaqItem(rows[0]));
+  } catch (e) { err(res, e); }
+});
+
+app.delete('/api/admin/faqs/:id', async (req, res) => {
+  try {
+    await q('DELETE FROM faqs WHERE id = $1', [req.params.id]);
+    ok(res, null);
+  } catch (e) { err(res, e); }
+});
+
+// ══════════════════════════════════════════════════════
 //  STATS  (admin dashboard)
 // ══════════════════════════════════════════════════════
 app.get('/api/stats', async (_req, res) => {
@@ -309,5 +488,44 @@ app.get('/api/stats', async (_req, res) => {
   } catch (e) { err(res, e); }
 });
 
-// ──────────────────────────────────────────────────────
-app.listen(PORT, () => console.log(`🚀  Chelouve API running on http://localhost:${PORT}`));
+async function ensureFaqTables() {
+  await q('CREATE EXTENSION IF NOT EXISTS "pgcrypto"');
+
+  await q(
+    `CREATE TABLE IF NOT EXISTS faq_categories (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      name TEXT NOT NULL,
+      slug TEXT UNIQUE NOT NULL,
+      sort_order INTEGER NOT NULL DEFAULT 0,
+      is_active BOOLEAN NOT NULL DEFAULT true,
+      created_at TIMESTAMPTZ DEFAULT now()
+    )`
+  );
+
+  await q(
+    `CREATE TABLE IF NOT EXISTS faqs (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      category_id UUID REFERENCES faq_categories(id) ON DELETE CASCADE NOT NULL,
+      question TEXT NOT NULL,
+      answer TEXT NOT NULL,
+      sort_order INTEGER NOT NULL DEFAULT 0,
+      is_active BOOLEAN NOT NULL DEFAULT true,
+      created_at TIMESTAMPTZ DEFAULT now()
+    )`
+  );
+
+  await q('CREATE INDEX IF NOT EXISTS idx_faq_categories_order ON faq_categories(sort_order, name)');
+  await q('CREATE INDEX IF NOT EXISTS idx_faq_items_category ON faqs(category_id, sort_order)');
+}
+
+async function startServer() {
+  try {
+    await ensureFaqTables();
+    app.listen(PORT, () => console.log(`🚀  Chelouve API running on http://localhost:${PORT}`));
+  } catch (e) {
+    console.error('Failed to initialize FAQ schema:', e);
+    process.exit(1);
+  }
+}
+
+startServer();

@@ -6,8 +6,9 @@ import { AdminProducts } from './AdminProducts';
 import { AdminCategories } from './AdminCategories';
 import { AdminOrders } from './AdminOrders';
 import { AdminAccounts } from './AdminAccounts';
+import { AdminFAQs } from './AdminFAQs';
 
-type AdminSection = 'dashboard' | 'products' | 'categories' | 'orders' | 'accounts';
+type AdminSection = 'dashboard' | 'products' | 'categories' | 'faqs' | 'orders' | 'accounts';
 
 export function AdminApp() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -33,6 +34,7 @@ export function AdminApp() {
       case 'dashboard':   return <AdminDashboard />;
       case 'products':    return <AdminProducts />;
       case 'categories':  return <AdminCategories />;
+      case 'faqs':        return <AdminFAQs />;
       case 'orders':      return <AdminOrders />;
       case 'accounts':    return <AdminAccounts />;
       default:            return <AdminDashboard />;

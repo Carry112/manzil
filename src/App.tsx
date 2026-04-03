@@ -15,43 +15,49 @@ import { WishlistPage } from './pages/WishlistPage';
 import { AccountPage } from './pages/AccountPage';
 import { CartProvider } from './context/CartContext';
 
+interface RouteState {
+  page: string;
+  params?: Record<string, string>;
+}
+
+function resolveRoute(path: string): RouteState {
+  if (path === '/' || path === '') return { page: 'home' };
+  if (path === '/shop' || path === '/new' || path === '/featured') return { page: 'shop' };
+  if (path.startsWith('/product/')) {
+    const slug = path.split('/product/')[1] || '';
+    return { page: 'product', params: { slug } };
+  }
+  if (path === '/checkout') return { page: 'checkout' };
+  if (path === '/about') return { page: 'about' };
+  if (path === '/blog') return { page: 'blog' };
+  if (path === '/faq') return { page: 'faq' };
+  if (path === '/contact') return { page: 'contact' };
+  if (path === '/wishlist') return { page: 'wishlist' };
+  if (path === '/account') return { page: 'account' };
+  if (path === '/cart') return { page: 'cart' };
+  return { page: 'home' };
+}
+
+function routeKey(route: RouteState): string {
+  if (route.page === 'product') {
+    return `${route.page}:${route.params?.slug || ''}`;
+  }
+  return route.page;
+}
+
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState<{
-    page: string;
-    params?: Record<string, string>;
-  }>({ page: 'home' });
+  const [currentPage, setCurrentPage] = useState<RouteState>(() =>
+    resolveRoute(typeof window !== 'undefined' ? window.location.pathname : '/')
+  );
+  const [displayPage, setDisplayPage] = useState<RouteState>(() =>
+    resolveRoute(typeof window !== 'undefined' ? window.location.pathname : '/')
+  );
+  const [isPageTransitioning, setIsPageTransitioning] = useState(false);
 
   useEffect(() => {
     const handleNavigation = () => {
-      const path = window.location.pathname;
-
-      if (path === '/' || path === '') {
-        setCurrentPage({ page: 'home' });
-      } else if (path === '/shop' || path === '/new' || path === '/featured') {
-        setCurrentPage({ page: 'shop' });
-      } else if (path.startsWith('/product/')) {
-        const slug = path.split('/product/')[1];
-        setCurrentPage({ page: 'product', params: { slug } });
-      } else if (path === '/checkout') {
-        setCurrentPage({ page: 'checkout' });
-      } else if (path === '/about') {
-        setCurrentPage({ page: 'about' });
-      } else if (path === '/blog') {
-        setCurrentPage({ page: 'blog' });
-      } else if (path === '/faq') {
-        setCurrentPage({ page: 'faq' });
-      } else if (path === '/contact') {
-        setCurrentPage({ page: 'contact' });
-      } else if (path === '/wishlist') {
-        setCurrentPage({ page: 'wishlist' });
-      } else if (path === '/account') {
-        setCurrentPage({ page: 'account' });
-      } else if (path === '/cart') {
-        setCurrentPage({ page: 'cart' });
-      } else {
-        setCurrentPage({ page: 'home' });
-      }
+      setCurrentPage(resolveRoute(window.location.pathname));
     };
 
     handleNavigation();
@@ -65,6 +71,7 @@ function App() {
         e.preventDefault();
         const url = new URL(link.href);
         window.history.pushState({}, '', url.pathname);
+        window.scrollTo(0, 0);
         handleNavigation();
       }
     };
@@ -77,14 +84,27 @@ function App() {
     };
   }, []);
 
-  const renderPage = () => {
-    switch (currentPage.page) {
+  useEffect(() => {
+    if (routeKey(currentPage) === routeKey(displayPage)) return;
+
+    setIsPageTransitioning(true);
+
+    const swapTimer = window.setTimeout(() => {
+      setDisplayPage(currentPage);
+      window.requestAnimationFrame(() => setIsPageTransitioning(false));
+    }, 130);
+
+    return () => window.clearTimeout(swapTimer);
+  }, [currentPage, displayPage]);
+
+  const renderPage = (pageState: RouteState) => {
+    switch (pageState.page) {
       case 'home':
         return <Homepage />;
       case 'shop':
         return <ShopPage />;
       case 'product':
-        return <ProductPage slug={currentPage.params?.slug || ''} />;
+        return <ProductPage slug={pageState.params?.slug || ''} />;
       case 'checkout':
         return <CheckoutPage />;
       case 'about':
@@ -112,7 +132,13 @@ function App() {
         <Header onMenuClick={() => setIsMenuOpen(true)} />
         <Navigation isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
         <Cart />
-        <main>{renderPage()}</main>
+        <main
+          className={`transition-all duration-300 ease-out will-change-transform ${
+            isPageTransitioning ? 'opacity-0 translate-y-1 blur-[1px]' : 'opacity-100 translate-y-0 blur-0'
+          }`}
+        >
+          {renderPage(displayPage)}
+        </main>
         <Footer />
       </div>
     </CartProvider>
